@@ -1,307 +1,274 @@
-# AAAI26-CASCADE
-[AAAI 2026] Official Implementation for [Decompose and Conquer: Compositional Reasoning for Zero-Shot Temporal Action Localization]
-# `<Paper Title>`
+# CASCADE: Decompose and Conquer: Compositional Reasoning for Zero-Shot Temporal Action Localization
 
-> `<One-sentence summary of the paper or project>`
+<div align="center">
 
-## Authors
+**[AAAI 2026]** Official Implementation of **[Decompose and Conquer: Compositional Reasoning for Zero-Shot Temporal Action Localization]**
 
-**Author A**<sup>1</sup>, **Author B**<sup>1</sup>, **Author C**<sup>2</sup>, **Author D**<sup>1</sup>\*
+[![Paper](https://img.shields.io/badge/Paper-AAAI%202026-blue?style=flat-square)](https://ojs.aaai.org/index.php/AAAI/article/view/37900)
+[![GitHub](https://img.shields.io/badge/GitHub-iLearn--Lab%2FAAAI26--CASCADE-black?style=flat-square&logo=github)](https://github.com/iLearn-Lab/AAAI26-CASCADE)
+[![License](https://img.shields.io/badge/License-See%20LICENSE-green?style=flat-square)](./LICENSE)
 
-<sup>1</sup> `<Affiliation 1>`  
-<sup>2</sup> `<Affiliation 2>`  
-\* Corresponding author
-
-## Links
-
-- **Paper**: [`Paper Link`](<paper-link>)
-- **Project Page**: [`Project Page`](<project-page-link>)
-- **Hugging Face Model**: [`Model`](<huggingface-model-link>)
-- **Hugging Face Dataset**: [`Dataset`](<huggingface-dataset-link>)
-- **Demo / Video**: [`Demo`](<demo-link>)
-- **Code Repository**: [`GitHub`](https://github.com/iLearn-Lab/<repo-name>)
-
-> 如果某些链接暂时没有，可以先删掉对应条目，后续再补充。
+</div>
 
 ---
 
-## Table of Contents
+## 📌 Authors
 
-- [Updates](#updates)
-- [Introduction](#introduction)
-- [Highlights](#highlights)
-- [Method / Framework](#method--framework)
-- [Project Structure](#project-structure)
-- [Installation](#installation)
-- [Checkpoints / Models](#checkpoints--models)
-- [Dataset / Benchmark](#dataset--benchmark)
-- [Usage](#usage)
-- [Demo / Visualization](#demo--visualization)
-- [TODO](#todo)
-- [Citation](#citation)
-- [Acknowledgement](#acknowledgement)
-- [License](#license)
+**Haoyu Tang**<sup>1</sup>, **Tianyuan Liang**<sup>1</sup>, **Han Jiang**<sup>2</sup>, **Xuesong Liu**<sup>3</sup>, **Qinghai Zheng**<sup>4</sup>, **Yupeng Hu**<sup>1</sup>\*
+
+<sup>1</sup> School of Software, Shandong University  
+<sup>2</sup> Xi'an Jiaotong University  
+<sup>3</sup> James Watt School of Engineering, University of Glasgow  
+<sup>4</sup> College of Computer and Data Science, Fuzhou University  
+
+\* Corresponding author: huyupeng@sdu.edu.cn
 
 ---
 
-## Updates
+## 🔗 Links
 
-- [MM/YYYY] Initial release
-- [MM/YYYY] Release paper / arXiv version
-- [MM/YYYY] Release code
-- [MM/YYYY] Release checkpoints on Hugging Face
-- [MM/YYYY] Release dataset / benchmark / demo
-
-> 如果项目刚建立，可以先只保留一条：
->
-> - [MM/YYYY] Initial release
+- **Paper**: [AAAI 2026](https://ojs.aaai.org/index.php/AAAI/article/view/37900)
+- **Code Repository**: [GitHub](https://github.com/iLearn-Lab/AAAI26-CASCADE)
 
 ---
 
-## Introduction
+## 📋 Table of Contents
 
-本项目是论文 **`<Paper Title>`** 的官方实现 / 复现实现 / 项目主页。
-
-请在这里简要说明：
-
-- 论文要解决什么问题
-- 方法的核心思想是什么
-- 与现有方法相比有什么特点
-- 本仓库提供了哪些内容，例如：
-  - 训练代码
-  - 推理代码
-  - 模型权重
-  - 数据处理脚本
-  - 评测脚本
-  - Demo
-
-### Example Description
-
-We present **`<Method Name>`**, a framework for **`<task name>`**.  
-Our method addresses **`<problem>`** by introducing **`<core idea>`**.  
-This repository provides the official implementation, pretrained checkpoints, and evaluation scripts.
+- [Updates](#-updates)
+- [Introduction](#-introduction)
+- [Highlights](#-highlights)
+- [Framework Overview](#-framework-overview)
+- [Project Structure](#-project-structure)
+- [Installation](#-installation)
+- [Dataset](#-dataset--benchmark)
+- [Usage](#-usage)
+- [Main Results](#-main-results)
+- [Visualization](#-visualization)
+- [TODO](#-todo)
+- [Citation](#-citation)
+- [Acknowledgements](#-acknowledgements)
+- [License](#-license)
 
 ---
 
-## Highlights
+## 🔥 Updates
 
-- 支持 `<task / domain>`
-- 提供 `<training / inference / evaluation>` 脚本
-- 提供 `<checkpoint / dataset / benchmark / demo>`
-- 适合用于 `<论文复现 / 项目展示 / 后续研究>`
+- **[04/2026]** Initial release of code and paper.
 
 ---
 
-## Method / Framework
+## 📖 Introduction
 
-你可以在这里放方法框架图、模型结构图或整体 pipeline 图。
+Temporal Action Localization (TAL) aims to identify the category and precise temporal boundaries of actions in untrimmed videos. Current Zero-Shot Temporal Action Localization (ZSTAL) methods—whether training-based or training-free—predominantly rely on a **single, unified query** to represent an entire action. This strategy is fundamentally ill-suited for complex, real-world activities, as it fails to capture their **internal compositional structure** and **dynamic multi-stage variations** across videos.
 
-### Framework Figure
+To address this, we reframe ZSTAL as a **compositional reasoning task** and propose **CASCADE** (**C**ontext-**A**ware **S**taged **A**ction **DE**composition), a novel training-free framework. Inspired by the human cognitive process—perceiving global context, decomposing events into stages, and reconstructing action instances—CASCADE:
 
-```markdown
-![Framework](./assets/framework.png)
+1. Leverages an MLLM to **filter irrelevant actions** and generate rich, video-specific captions.
+2. Uses an LLM to **decompose** each caption into temporally ordered key and non-key stages.
+3. Employs the MLLM to perform **stage-wise frame-level confidence estimation**.
+4. Applies a novel **hierarchical merging logic** to reconstruct complete action instances from stage segments.
+
+Extensive experiments on **THUMOS14** and **ActivityNet-1.3** show that CASCADE sets a new state-of-the-art among training-free methods and, most notably, **significantly surpasses all prior training-based ZSTAL approaches** on ActivityNet-1.3.
+
+---
+
+## ✨ Highlights
+
+- 🏆 **Training-Free SOTA**: CASCADE outperforms all prior training-free ZSTAL methods on both THUMOS14 and ActivityNet-1.3.
+- 🚀 **Surpasses Training-Based Methods**: On ActivityNet-1.3, our training-free approach outperforms all training-based ZSTAL competitors (e.g., **+7.0% mAP** over DeTAL under the 75/25 split).
+- 🧠 **Compositional Reasoning**: The first ZSTAL framework to explicitly model the internal stage structure of complex actions via LLM-driven decomposition.
+- 🔌 **Plug-and-Play**: Operates solely with off-the-shelf MLLMs (e.g., Qwen2.5-VL, LLaVA-1.5) and LLMs (e.g., DeepSeek-V3)—no task-specific fine-tuning required.
+
+---
+
+## 🏗️ Framework Overview
+
+CASCADE consists of four sequential modules:
+
+| Step | Module | Description |
+|------|--------|-------------|
+| 1 | **Context-Guided Action Filtering** | MLLM identifies which actions from the predefined set actually occur in the video. |
+| 2 | **Stage-Aware Decomposition** | MLLM generates a video-specific caption; LLM decomposes it into ordered key/non-key stages. |
+| 3 | **Stage-wise Confidence Estimation** | MLLM computes frame-level confidence scores for each stage in a single batched forward pass. |
+| 4 | **Compositional Action Reconstruction** | A hierarchical merging logic fuses stage segments into complete, coherent action instances. |
+
+![Framework](./paper/framework.png)
+
+> *Figure: Overview of the CASCADE framework pipeline.*
+
+![Video Stage](./paper/video-stage.png)
+
+> *Figure: Illustration of stage-aware localization. Decomposing "Baking cookies" into sub-stages (cutting chocolate → mixing ingredients → baking) yields significantly more precise localization than a single-query approach.*
+
+---
+
+## 📁 Project Structure
+
+```
+AAAI26-CASCADE/
+├── annotation/          # Annotation files for datasets
+├── code/                # Core implementation of CASCADE
+├── paper/
+│   ├── 29083.pdf        # Paper PDF
+│   ├── framework.png    # Framework overview figure
+│   ├── scores.png       # Performance score visualization
+│   └── video-stage.png  # Video stage decomposition illustration
+├── LICENSE
+└── README.md
 ```
 
-实际使用时，把上面这行替换成：
-
-```markdown
-![Framework](./assets/framework.png)
-```
-
-然后在下面补一句说明：
-
-**Figure 1.** Overall framework of `<Method Name>`.
-
 ---
 
-## Project Structure
+## ⚙️ Installation
 
-```text
-.
-├── assets/                # 图片、框架图、结果图、demo 图
-├── configs/               # 配置文件
-├── data/                  # 数据说明（不建议直接上传大数据本体）
-├── scripts/               # 训练、推理、评测脚本
-├── src/                   # 核心源码
-├── README.md
-├── requirements.txt
-└── LICENSE
-```
+### Requirements
 
-如果你的项目结构不同，请按实际情况修改。
+- Python >= 3.8
+- PyTorch >= 2.0
+- CUDA-compatible GPU (experiments run on NVIDIA A100 80GB)
 
----
-
-## Installation
-
-### 1. Clone the repository
+### Setup
 
 ```bash
-git clone https://github.com/iLearn-Lab/<repo-name>.git
-cd <repo-name>
-```
+# Clone the repository
+git clone https://github.com/iLearn-Lab/AAAI26-CASCADE.git
+cd AAAI26-CASCADE
 
-### 2. Create environment
+# Create a virtual environment (recommended)
+conda create -n cascade python=3.10 -y
+conda activate cascade
 
-```bash
-python -m venv .venv
-source .venv/bin/activate   # Linux / Mac
-# .venv\Scripts\activate    # Windows
-```
-
-### 3. Install dependencies
-
-```bash
+# Install dependencies
 pip install -r requirements.txt
 ```
 
-> 如果你使用的是 conda、poetry、uv 或 docker，请改成自己的实际安装方式。
+### Model Weights
+
+CASCADE is training-free and relies on the following off-the-shelf pretrained models:
+
+| Role | Model | Source |
+|------|-------|--------|
+| Backbone MLLM (option 1) | Qwen2.5-VL-7B | [HuggingFace](https://huggingface.co/Qwen/Qwen2.5-VL-7B-Instruct) |
+| Backbone MLLM (option 2) | LLaVA-1.5-7B | [HuggingFace](https://huggingface.co/liuhaotian/llava-v1.5-7b) |
+| Stage Decomposition LLM | DeepSeek-V3 | [DeepSeek API](https://platform.deepseek.com/) |
 
 ---
 
-## Checkpoints / Models
+## 📊 Dataset / Benchmark
 
-如果你们发布了模型权重，可以写：
+CASCADE is evaluated on two standard ZSTAL benchmarks:
 
-- **Main checkpoint**: [`Model Link`](<huggingface-model-link>)
-- **Additional checkpoint**: [`Other Checkpoint`](<other-checkpoint-link>)
+**THUMOS14**
+- 20 sports action classes, 200 training / 213 test videos.
+- Evaluation at tIoU thresholds: {0.3, 0.4, 0.5, 0.6, 0.7}.
 
-下载后请放入如下目录：
+**ActivityNet-1.3**
+- 200 action classes, ~20K videos across train/val/test splits.
+- Evaluation at tIoU thresholds: {0.5, 0.75, 0.95}.
 
-```text
-checkpoints/
-```
+Both datasets are evaluated under **75%/25%** and **50%/50%** seen/unseen class splits, averaged over 10 random splits for statistical robustness.
 
-如果需要修改配置路径，也可以说明：
-
-- 修改 `config.yaml` 中的 checkpoint 路径
-- 或在运行脚本时通过参数传入
-
----
-
-## Dataset / Benchmark
-
-如果你们还提供数据集，可以写：
-
-- **Dataset**: [`Dataset Link`](<huggingface-dataset-link>)
-- **Benchmark**: [`Benchmark Link`](<benchmark-link>)
-
-并说明数据组织方式，例如：
-
-```text
-data/
-├── train/
-├── val/
-└── test/
-```
-
-> 如果数据集不能直接公开，请在这里说明申请方式或访问限制。
+Please refer to the official dataset pages for download instructions:
+- [THUMOS14](http://crcv.ucf.edu/THUMOS14/)
+- [ActivityNet-1.3](http://activity-net.org/)
 
 ---
 
-## Usage
-
-### Training
-
-```bash
-python scripts/train.py
-```
+## 🚀 Usage
 
 ### Inference
 
 ```bash
-python scripts/infer.py
+# Run CASCADE with Qwen2.5-VL backbone on ActivityNet-1.3
+python code/run_cascade.py \
+    --dataset activitynet \
+    --backbone qwen \
+    --split 75_25 \
+    --output_dir ./outputs
+
+# Run CASCADE with LLaVA-1.5 backbone on THUMOS14
+python code/run_cascade.py \
+    --dataset thumos14 \
+    --backbone llava \
+    --split 75_25 \
+    --output_dir ./outputs
 ```
 
-### Evaluation
-
-```bash
-python scripts/eval.py
-```
-
-请根据你的项目实际情况替换成真实命令。  
-如果你的项目没有训练或评测部分，可以删除对应小节。
+> ⚠️ **Note**: Detailed scripts and configuration files will be released shortly. Please check back or watch the repository for updates.
 
 ---
 
-## Demo / Visualization
+## 📈 Main Results
 
-如果你们有演示页面、视频或截图，可以写在这里。
+### THUMOS14
 
-### Demo Video
+| Method | Training | 0.3 | 0.4 | 0.5 | 0.6 | 0.7 | mAP |
+|--------|----------|-----|-----|-----|-----|-----|-----|
+| Eff-Prompt | ✓ | 39.7 | 31.6 | 23.0 | 14.9 | 7.5 | 23.3 |
+| STALE | ✓ | 40.5 | 32.3 | 23.5 | 15.3 | 7.6 | 23.8 |
+| DeTAL | ✓ | 39.8 | 33.6 | 25.9 | 17.4 | 9.9 | 25.3 |
+| T3AL | ✗ | 19.2 | 12.7 | 7.4 | 4.4 | 2.2 | 9.2 |
+| FreeZAD | ✗ | 21.2 | 13.6 | 8.3 | 4.7 | 2.5 | 10.0 |
+| ZEAL | ✗ | 22.1 | 16.1 | 11.0 | 5.7 | 3.0 | 11.6 |
+| **CASCADE-Qwen (Ours)** | ✗ | 23.9 | 17.5 | 11.7 | 7.6 | 4.3 | **13.0** |
+| **CASCADE-LLaVA (Ours)** | ✗ | 23.8 | 17.9 | 14.0 | 7.6 | 5.1 | **13.7** |
 
-- [`Demo Link`](<demo-link>)
+*Results under the 75%/25% split. Training-free methods in **bold**.*
 
-### Example Results
+### ActivityNet-1.3
 
-你可以插入结果图：
+| Method | Training | 0.5 | 0.75 | 0.95 | mAP |
+|--------|----------|-----|------|------|-----|
+| DeTAL | ✓ | 39.3 | 26.4 | 5.0 | 25.8 |
+| FreeZAD | ✗ | 33.5 | 17.5 | 3.9 | 18.3 |
+| **CASCADE-Qwen (Ours)** | ✗ | 41.4 | 27.4 | 7.1 | **25.3** |
+| **CASCADE-LLaVA (Ours)** | ✗ | 52.7 | 36.7 | 8.3 | **32.6** |
 
-```markdown
-![Result](./assets/result.png)
-```
+*Results under the 75%/25% split. CASCADE-LLaVA surpasses ALL training-based competitors.*
 
-或者放一个简单结果表：
-
-| Setting | Result |
-|---|---:|
-| Baseline | xx.x |
-| Ours | xx.x |
-
----
-
-## TODO
-
-- [ ] 完善文档
-- [ ] 补充训练脚本说明
-- [ ] 补充推理脚本说明
-- [ ] 上传模型权重
-- [ ] 上传结果图
-- [ ] 发布 demo / project page
+![Scores](./paper/scores.png)
 
 ---
 
-## Citation
+## 🎨 Visualization
 
-如果你的项目对应论文，请提供 BibTeX：
+The figure below shows CASCADE's localization process for the action "Baking cookies" on ActivityNet-1.3. The action is decomposed into four semantic stages (S1: Preparing Ingredients, S2: Mixing Ingredients, S3: Melting Chocolate, S4: Baking). Frame-level confidence scores are computed per stage, thresholded to yield raw proposals (P), and then fused via hierarchical merging into a final prediction (P̂) that closely matches the ground truth (GT).
+
+![Visualization](./paper/video-stage.png)
+
+---
+
+## ✅ TODO
+
+- [ ] Release full inference code
+- [ ] Release detailed configuration files and prompts
+- [ ] Release annotation files
+- [ ] Add demo / visualization script
+- [ ] Release pre-computed results
+
+---
+
+## 📝 Citation
+
+If you find CASCADE useful in your research, please consider citing our paper:
 
 ```bibtex
-@article{yourpaper2025,
-  title={Your Paper Title},
-  author={Author A and Author B and Author C},
-  journal={arXiv preprint arXiv:xxxx.xxxxx},
-  year={2025}
+@inproceedings{tang2026cascade,
+  title     = {Decompose and Conquer: Compositional Reasoning for Zero-Shot Temporal Action Localization},
+  author    = {Tang, Haoyu and Liang, Tianyuan and Jiang, Han and Liu, Xuesong and Zheng, Qinghai and Hu, Yupeng},
+  booktitle = {Proceedings of the AAAI Conference on Artificial Intelligence},
+  year      = {2026}
 }
 ```
 
-如果还没有正式论文，也可以临时写成：
+---
 
-```bibtex
-@misc{yourproject2025,
-  title={Your Project Title},
-  author={Your Name},
-  year={2025},
-  howpublished={GitHub repository}
-}
-```
+## 🙏 Acknowledgements
+
+This work was supported in part by the National Natural Science Foundation of China (No. 62206156, No. 62306074, No. 62276155, No. 72004127, No. 62206157); the NSF of Shandong Province (No. ZR2024QF104, No. ZR2021MF040, No. ZR2022QF047); the Key R&D Program of Shandong Province (No. 2022CXGC020107); the Natural Science Basic Research Plan in Shaanxi Province (No. 2025JCJCQN-091); and the Key R&D Program of Shaanxi (No. 2024GX-YBXM-556).
 
 ---
 
-## Acknowledgement
+## 📄 License
 
-可以在这里感谢：
-
-- 指导老师
-- 合作者
-- 使用到的开源项目
-- 数据集或 benchmark 提供方
-
-示例：
-
-- Thanks to our supervisor and collaborators for valuable support.
-- Thanks to the open-source community for providing useful baselines and tools.
-
----
-
-## License
-
-This project is released under the Apache License 2.0.
+This project is released under the terms of the [LICENSE](./LICENSE) file included in this repository.
