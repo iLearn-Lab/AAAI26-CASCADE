@@ -21,12 +21,8 @@
 
 <!-- Badges -->
 [![AAAI](https://img.shields.io/badge/AAAI-2026-blue?style=flat-square)](https://ojs.aaai.org/index.php/AAAI/article/view/37900)
-[![arXiv](https://img.shields.io/badge/arXiv-Coming.Soon-red?style=flat-square&logo=arxiv)](https://arxiv.org)
 [![Paper](https://img.shields.io/badge/Paper-PDF-orange?style=flat-square&logo=adobeacrobatreader)](https://ojs.aaai.org/index.php/AAAI/article/view/37900)
 [![GitHub](https://img.shields.io/badge/GitHub-CASCADE-black?style=flat-square&logo=github)](https://github.com/iLearn-Lab/AAAI26-CASCADE)
-[![Website](https://img.shields.io/badge/Project-Website-brightgreen?style=flat-square&logo=googlechrome)](https://github.com/iLearn-Lab/AAAI26-CASCADE)
-[![HuggingFace Model](https://img.shields.io/badge/🤗%20HuggingFace-Model-yellow?style=flat-square)](https://huggingface.co)
-[![HuggingFace Dataset](https://img.shields.io/badge/🤗%20HuggingFace-Dataset-yellow?style=flat-square)](https://huggingface.co)
 [![PyTorch](https://img.shields.io/badge/PyTorch-%3E%3D2.0-EE4C2C?style=flat-square&logo=pytorch)](https://pytorch.org)
 [![Python](https://img.shields.io/badge/Python-%E2%89%A53.8-3776AB?style=flat-square&logo=python)](https://www.python.org)
 [![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)](./LICENSE)
