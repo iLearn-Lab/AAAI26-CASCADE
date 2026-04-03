@@ -109,13 +109,21 @@ CASCADE consists of four sequential modules:
 
 ```
 AAAI26-CASCADE/
-├── annotation/          # Annotation files for datasets
-├── code/                # Core implementation of CASCADE
+├── annotation/                        # Annotation files for datasets
+│   ├── activity_net.v1-3.min.json     # ActivityNet-1.3 annotations
+│   └── thumos_anno_action.json        # THUMOS14 annotations
+├── code/                              # Core implementation of CASCADE
+│   ├── 1category.py                   # Step 1: Context-Guided Action Filtering
+│   ├── 2caption.py                    # Step 2: Video-specific caption generation
+│   ├── 3stage.py                      # Step 3: Stage-Aware Decomposition (LLM)
+│   ├── 4localization.py               # Step 4: Stage-wise Confidence Estimation
+│   ├── 5merge.py                      # Step 5: Compositional Action Reconstruction
+│   └── 6value.py                      # Step 6: Evaluation & metrics
 ├── paper/
-│   ├── 29083.pdf        # Paper PDF
-│   ├── framework.png    # Framework overview figure
-│   ├── scores.png       # Performance score visualization
-│   └── video-stage.png  # Video stage decomposition illustration
+│   ├── 29083.pdf                      # Paper PDF
+│   ├── framework.png                  # Framework overview figure
+│   ├── scores.png                     # Performance score visualization
+│   └── video-stage.png                # Video stage decomposition illustration
 ├── LICENSE
 └── README.md
 ```
@@ -182,19 +190,23 @@ Please refer to the official dataset pages for download instructions:
 ### Inference
 
 ```bash
-# Run CASCADE with Qwen2.5-VL backbone on ActivityNet-1.3
-python code/run_cascade.py \
-    --dataset activitynet \
-    --backbone qwen \
-    --split 75_25 \
-    --output_dir ./outputs
+# Step 1 — Context-Guided Action Filtering
+python code/1category.py --dataset activitynet --split 75_25
 
-# Run CASCADE with LLaVA-1.5 backbone on THUMOS14
-python code/run_cascade.py \
-    --dataset thumos14 \
-    --backbone llava \
-    --split 75_25 \
-    --output_dir ./outputs
+# Step 2 — Video-specific Caption Generation
+python code/2caption.py --dataset activitynet --split 75_25
+
+# Step 3 — Stage-Aware Decomposition (LLM)
+python code/3stage.py --dataset activitynet --split 75_25
+
+# Step 4 — Stage-wise Confidence Estimation
+python code/4localization.py --dataset activitynet --backbone qwen --split 75_25
+
+# Step 5 — Compositional Action Reconstruction
+python code/5merge.py --dataset activitynet --split 75_25
+
+# Step 6 — Evaluation
+python code/6value.py --dataset activitynet --split 75_25
 ```
 
 > ⚠️ **Note**: Detailed scripts and configuration files will be released shortly. Please check back or watch the repository for updates.
