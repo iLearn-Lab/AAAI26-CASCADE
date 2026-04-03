@@ -1,34 +1,45 @@
-# CASCADE: Decompose and Conquer: Compositional Reasoning for Zero-Shot Temporal Action Localization
-
 <div align="center">
 
-**[AAAI 2026]** Official Implementation of **[Decompose and Conquer: Compositional Reasoning for Zero-Shot Temporal Action Localization]**
+# 🎬 CASCADE
 
-[![Paper](https://img.shields.io/badge/Paper-AAAI%202026-blue?style=flat-square)](https://ojs.aaai.org/index.php/AAAI/article/view/37900)
-[![GitHub](https://img.shields.io/badge/GitHub-iLearn--Lab%2FAAAI26--CASCADE-black?style=flat-square&logo=github)](https://github.com/iLearn-Lab/AAAI26-CASCADE)
-[![License](https://img.shields.io/badge/License-See%20LICENSE-green?style=flat-square)](./LICENSE)
+## Decompose and Conquer: Compositional Reasoning for<br>Zero-Shot Temporal Action Localization
+
+*Official Implementation · AAAI 2026*
+
+---
+
+**Haoyu Tang**<sup>1</sup> · **Tianyuan Liang**<sup>1</sup> · **Han Jiang**<sup>2</sup> · **Xuesong Liu**<sup>3</sup> · **Qinghai Zheng**<sup>4</sup> · **Yupeng Hu**<sup>1 ✉</sup>
+
+<sup>1</sup> School of Software, Shandong University &nbsp;|&nbsp;
+<sup>2</sup> Xi'an Jiaotong University &nbsp;|&nbsp;
+<sup>3</sup> University of Glasgow &nbsp;|&nbsp;
+<sup>4</sup> Fuzhou University
+
+✉ Corresponding author
+
+---
+
+<!-- Badges -->
+[![AAAI](https://img.shields.io/badge/AAAI-2026-blue?style=flat-square)](https://ojs.aaai.org/index.php/AAAI/article/view/37900)
+[![arXiv](https://img.shields.io/badge/arXiv-Coming.Soon-red?style=flat-square&logo=arxiv)](https://arxiv.org)
+[![Paper](https://img.shields.io/badge/Paper-PDF-orange?style=flat-square&logo=adobeacrobatreader)](https://ojs.aaai.org/index.php/AAAI/article/view/37900)
+[![GitHub](https://img.shields.io/badge/GitHub-CASCADE-black?style=flat-square&logo=github)](https://github.com/iLearn-Lab/AAAI26-CASCADE)
+[![Website](https://img.shields.io/badge/Project-Website-brightgreen?style=flat-square&logo=googlechrome)](https://github.com/iLearn-Lab/AAAI26-CASCADE)
+[![HuggingFace Model](https://img.shields.io/badge/🤗%20HuggingFace-Model-yellow?style=flat-square)](https://huggingface.co)
+[![HuggingFace Dataset](https://img.shields.io/badge/🤗%20HuggingFace-Dataset-yellow?style=flat-square)](https://huggingface.co)
+[![PyTorch](https://img.shields.io/badge/PyTorch-%3E%3D2.0-EE4C2C?style=flat-square&logo=pytorch)](https://pytorch.org)
+[![Python](https://img.shields.io/badge/Python-%E2%89%A53.8-3776AB?style=flat-square&logo=python)](https://www.python.org)
+[![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)](./LICENSE)
+[![Stars](https://img.shields.io/github/stars/iLearn-Lab/AAAI26-CASCADE?style=flat-square&logo=github)](https://github.com/iLearn-Lab/AAAI26-CASCADE/stargazers)
+
+---
+
+<!-- Framework Figure -->
+![Framework Overview](./paper/framework.png)
+
+*Figure: Overview of the CASCADE framework — Context-Guided Action Filtering → Stage-Aware Decomposition → Stage-wise Confidence Estimation → Compositional Action Reconstruction.*
 
 </div>
-
----
-
-## 📌 Authors
-
-**Haoyu Tang**<sup>1</sup>, **Tianyuan Liang**<sup>1</sup>, **Han Jiang**<sup>2</sup>, **Xuesong Liu**<sup>3</sup>, **Qinghai Zheng**<sup>4</sup>, **Yupeng Hu**<sup>1</sup>\*
-
-<sup>1</sup> School of Software, Shandong University  
-<sup>2</sup> Xi'an Jiaotong University  
-<sup>3</sup> James Watt School of Engineering, University of Glasgow  
-<sup>4</sup> College of Computer and Data Science, Fuzhou University  
-
-\* Corresponding author: huyupeng@sdu.edu.cn
-
----
-
-## 🔗 Links
-
-- **Paper**: [AAAI 2026](https://ojs.aaai.org/index.php/AAAI/article/view/37900)
-- **Code Repository**: [GitHub](https://github.com/iLearn-Lab/AAAI26-CASCADE)
 
 ---
 
@@ -91,10 +102,6 @@ CASCADE consists of four sequential modules:
 | 2 | **Stage-Aware Decomposition** | MLLM generates a video-specific caption; LLM decomposes it into ordered key/non-key stages. |
 | 3 | **Stage-wise Confidence Estimation** | MLLM computes frame-level confidence scores for each stage in a single batched forward pass. |
 | 4 | **Compositional Action Reconstruction** | A hierarchical merging logic fuses stage segments into complete, coherent action instances. |
-
-![Framework](./paper/framework.png)
-
-> *Figure: Overview of the CASCADE framework pipeline.*
 
 ![Video Stage](./paper/video-stage.png)
 
